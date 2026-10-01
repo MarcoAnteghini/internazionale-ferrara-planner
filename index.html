@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Festival Planner Ferrara</title>
+<meta name="description" content="Griglia per luogo e orario del festival Internazionale a Ferrara, con filtri per accesso, programma personale stampabile ed esportazione in calendario.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<header class="top">
+  <h1><span id="festTitle">Internazionale a Ferrara</span><small id="festSub">Griglia per luogo e orario</small></h1>
+  <nav class="toolbar" aria-label="Strumenti">
+    <div class="seg" id="days" role="group" aria-label="Giorno"></div>
+    <div class="seg" id="views" role="group" aria-label="Vista">
+      <button type="button" data-view="grid">Griglia</button>
+      <button type="button" data-view="prog">Il mio programma (<span id="nsel">0</span>)</button>
+    </div>
+    <button type="button" class="btn primary" id="saveBtn">Salva la mia selezione</button>
+    <button type="button" class="btn" id="printBtn">Stampa</button>
+    <div class="menu-wrap">
+      <button type="button" class="btn" id="menuBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="menu">Altro <span aria-hidden="true">▾</span></button>
+      <div class="menu" id="menu" role="menu" aria-label="Altre azioni" hidden>
+        <button type="button" role="menuitem" data-act="share">Copia link di condivisione</button>
+        <button type="button" role="menuitem" data-act="export-json">Esporta backup (JSON)</button>
+        <button type="button" role="menuitem" data-act="import-json">Importa backup (JSON)</button>
+        <button type="button" role="menuitem" data-act="ics">Esporta nel calendario (.ics)</button>
+        <button type="button" role="menuitem" data-act="theme" id="themeItem">Tema: automatico</button>
+        <hr>
+        <button type="button" role="menuitem" data-act="clear" class="danger">Svuota il programma</button>
+      </div>
+    </div>
+    <input type="file" id="fileIn" accept="application/json,.json" hidden>
+  </nav>
+</header>
+
+<div id="banner" class="banner" role="region" aria-label="Avviso" aria-live="polite" hidden></div>
+
+<section id="gridView" class="view" aria-label="Griglia">
+  <div class="filters">
+    <label class="search">
+      <span class="sr">Cerca</span>
+      <input type="search" id="q" placeholder="Cerca titolo, relatori, sezione, luogo" autocomplete="off">
+    </label>
+    <div class="chips" id="accChips" role="group" aria-label="Filtra per accesso"></div>
+    <div class="chips" id="kindChips" role="group" aria-label="Filtra per tipo"></div>
+    <div class="chips">
+      <button type="button" class="chip" id="mineChip" aria-pressed="false"><span aria-hidden="true">✓</span> Solo i miei</button>
+      <button type="button" class="chip ghost" id="resetF" hidden>Azzera filtri</button>
+    </div>
+    <span class="fcount" id="fcount" aria-live="polite"></span>
+  </div>
+  <div class="note">Spunta la casella di un evento per aggiungerlo al tuo programma, tocca il blocco per i dettagli. Blocchi sfumati in fondo: fine stimata. Accesso e orari vanno sempre verificati sul sito ufficiale.
+    <details id="rules" hidden><summary>Come funziona l'accesso</summary><div id="rulesText"></div></details>
+  </div>
+  <div class="conflicts" id="conf" role="status"></div>
+  <div class="wrap" id="wrap"><div class="grid" id="grid"></div></div>
+</section>
+
+<section id="progView" class="view prog" aria-label="Il mio programma" hidden></section>
+
+<div id="print" class="print"></div>
+
+<dialog id="dlg" aria-labelledby="dlgTitle"></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="appError" class="app-error" hidden>Dati del programma non trovati. Controlla che il file data/programma-2026.js sia presente.</div>
+
+<script src="data/programma-2026.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
